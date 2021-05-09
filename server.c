@@ -29,29 +29,16 @@ int main(int argc, char** argv) {
     }
 
     //read from gevent and check fro errors
-    char buf[BUF_SZ];
+    char buf[BUF_SZ + 1];
     while(1){
         size_t nread = read(fd,buf,BUF_SZ);
-        if (-1 == nread) {
-			if (errno == EAGAIN) {
-				printf("stop the blocking call to read\n");
-			} else {
-				perror("something wrong");
-			}
-
-			sleep(1);
-			continue;
-        }else if (0 == nread) {
-			if (errno == EAGAIN) {
-				printf("stop the blocking call to read\n");
-				sleep(1);
-				continue;
-			} else {
-				// end of file?
-				break;
-			}
+        if (nread <= 0) {
+		    perror("Unable to read from gevent\n");
 		} else {
 			//do something
+            buf[5] = '\0';
+			printf("nread: %zd\n", nread);
+			printf("buffer: %s\n", buf);
 		}
         
     }
