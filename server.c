@@ -76,7 +76,8 @@ int main(int argc, char** argv) {
 				char WR_filename[IDENT_SZ + 4];
 				strcpy(RD_filename,identifer);
 				strcpy(WR_filename,identifer);
-
+				printf("read filename: %s\n",RD_filename);
+				printf("write filename: %s\n",WR_filename);
 				//make domain and check error
 				if(mkdir(domain,0777) == -1){
 					fprintf(stderr,"Failed to create domain.");
