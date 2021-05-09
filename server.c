@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
   //buffer
   unsigned char buf[BUF_SZ];
   //type
-  short type;
+  unsigned char type[2];
   //identifier
   char identifer[IDENT_SZ];
   //domain
@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
     }else {
       strncpy(type,buf,2);
       //CONNECT
-      if(strcmp(type,1)){
+      if(1 == type){
         strncpy(identifer,buf+BUFSIZ,IDENT_SZ);
         strncpy(domain,buf+BUF_SZ+IDENT_SZ,DOMAIN_SZ);
 		char RD_filename[IDENT_SZ + 4];
