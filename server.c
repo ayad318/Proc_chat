@@ -11,7 +11,6 @@
 #define CHANNEL_NAME ("gevent")
 
 int main(int argc, char** argv) {
-    int gevent[2];
     
     // create gevent and check for error
     if((mkfifo(CHANNEL_NAME, S_IRWXU | S_IRWXG)) == -1){
@@ -25,11 +24,11 @@ int main(int argc, char** argv) {
     
     //read from gevent and store and check error
     unsigned char buf[BUF_SZ];
-    if(read(fd,buf,BUF_SZ) == -1){
+    if(read(CHANNEL_NAME,buf,BUF_SZ) == -1){
         fprintf(stderr, "Unable to read gevent");
     }
     
-    if (close(fd) == -1){
+    if (close(CHANNEL_NAME) == -1){
         fprintf(stderr, "Unable to close gevent");
     } 
     
