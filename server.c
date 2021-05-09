@@ -32,8 +32,10 @@ int main(int argc, char** argv) {
         int res = read(fd,buf,BUF_SZ);
         if(res < 0){
             fprintf(stderr, "Unable to read gevent");
+        }if(0 == res){
+            printf("no data availbe\n")
         }
-        printf("Buffer: %s\n",buf);
+        
     }
     
     // close channel
