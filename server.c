@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
         fprintf(stderr, "Unable to read gevent");
     }
     
-    if (fclose(CHANNEL_NAME) == -1){
+    if (close(CHANNEL_NAME) == -1){
         fprintf(stderr, "Unable to close gevent");
     } 
     
