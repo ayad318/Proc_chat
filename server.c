@@ -31,7 +31,7 @@ void connect(unsigned char identifier[], unsigned char domain[]){
 	
 }
 
-short toShort(const char* bytes) {
+short toShort(unsigned char* bytes) {
     
 	return (short)(((unsigned char)bytes[1] << 8) | (unsigned char)bytes[0]);
 }
