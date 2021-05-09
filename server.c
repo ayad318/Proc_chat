@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
         
   }
     
-    // close channel
+  // close channel
   close(fd);
   return 0;
 }
