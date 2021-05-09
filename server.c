@@ -13,12 +13,12 @@ int main(int argc, char** argv) {
     if((mkfifo(CHANNEL_NAME, S_IRWXU | S_IRWXG)) >= 0){
         int fd = open(CHANNEL_NAME, O_RDONLY);
         if(fd > 0){
-            FILE* read_channel = fdopen(fd, "r");
+            FILE* read_channel = fopen(fd, "r");
             char buf[BUF_SZ];
             while(fgets(buf, BUF_SZ, read_channel) != NULL) {
                 puts(buf);
             }
-            if (close(fd) < 0){
+            if (fclose(fd) < 0){
                 fprintf(stderr, "Unable to close gevent");
             } 
         }else{
