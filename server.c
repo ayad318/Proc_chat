@@ -31,66 +31,66 @@ void connect(unsigned char identifier[], unsigned char domain[]){
 
 int main(int argc, char** argv) {
     
-  // create gevent and check for error
-  if((mkfifo(CHANNEL_NAME, S_IRWXU | S_IRWXG)) == -1){
-      fprintf(stderr, "Unable to create gevent"); 
-  }
+  	// create gevent and check for error
+  	if((mkfifo(CHANNEL_NAME, S_IRWXU | S_IRWXG)) == -1){
+      	fprintf(stderr, "Unable to create gevent"); 
+  	}
   
-  //open gevent for read only and check error
-  int fd = open("gevent", O_RDONLY);
-  if(fd < 0){
-    fprintf(stderr, "Unable to open gevent");
-  }
+  	//open gevent for read only and check error
+  	int fd = open("gevent", O_RDONLY);
+  	if(fd < 0){
+    	fprintf(stderr, "Unable to open gevent");
+  	}
 
-  //buffer
-  char buf[BUF_SZ];
-  //type
-  short type;
-  //identifier
-  char identifer[IDENT_SZ];
-  //domain
-  char domain[DOMAIN_SZ];
+  	//buffer
+  	unsigned char buf[BUF_SZ];
+  	//type
+  	short type;
+  	//identifier
+  	unsigned char identifer[IDENT_SZ];
+  	//domain
+  	unsigned char domain[DOMAIN_SZ];
 
 
-  while(1){
+  	while(1){
 
-    //read from gevent and check fro errors
-    size_t nread = read(fd,buf,BUF_SZ);
-    if (nread < 0) {
+    	//read from gevent and check fro errors
+    	size_t nread = read(fd,buf,BUF_SZ);
+    	if (nread < 0) {
 			perror("read issues");
 			break;
-    }else if ( 0 == nread){
-      sleep (5);
-    }else {
-      type = buf;
-      //CONNECT
-      if(1 == type){
-        strncpy(identifer,buf+BUFSIZ,IDENT_SZ);
-        strncpy(domain,buf+BUF_SZ+IDENT_SZ,DOMAIN_SZ);
-		char RD_filename[IDENT_SZ + 4];
-		char WR_filename[IDENT_SZ + 4];
-		strcpy(RD_filename,identifer);
-		strcpy(WR_filename,identifer);
+    	}else if ( 0 == nread){
+      		sleep (5);
+    	}else {
+      		memcpy(type,buf,2);
+      		//CONNECT
+    		if(1 == type){
+        		memcpy(identifer,buf+BUFSIZ,IDENT_SZ);
+        		memcpy(domain,buf+BUF_SZ+IDENT_SZ,DOMAIN_SZ);
+				char RD_filename[IDENT_SZ + 4];
+				char WR_filename[IDENT_SZ + 4];
+				strcpy(RD_filename,identifer);
+				strcpy(WR_filename,identifer);
 
-		//make domain and check error
-		if(mkdir(domain,0777) == -1){
-			fprintf(stderr,"Failed to create domain.");
-		}
+				//make domain and check error
+				if(mkdir(domain,0777) == -1){
+					fprintf(stderr,"Failed to create domain.");
+				}
         
-		mkfifo(strcat(RD_filename,RD_POSTFIX),0777);
-		mkfifo(strcat(WR_filename,WR_POSTFIX),0777);
+				mkfifo(strcat(RD_filename,RD_POSTFIX),0777);
+				mkfifo(strcat(WR_filename,WR_POSTFIX),0777);
 
-		int client_handler = fork();
-		if(0 == client_handler){
-			printf("hello from child");
+				int client_handler = fork();
+				if(0 == client_handler){
+					printf("hello from child");
+				}
+      		}
 		}
-      }
 	}
-  }
     
-  // close channel
-  if(close(fd) == -1){
-    fprintf(stderr, "Unable to close gevent");
-  }
-  return 0;
+  	// close channel
+  	if(close(fd) == -1){
+    	fprintf(stderr, "Unable to close gevent");
+  	}
+  	return 0;
 }
