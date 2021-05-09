@@ -3,10 +3,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#include <sys/types.h>
-#include <sys/uio.h>
-#include <unistd.h>
 #include <sys/stat.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <errno.h>
+#include <sys/uio.h>
 #include <string.h>
 
 #define BUF_SZ (2048)
@@ -29,12 +31,28 @@ int main(int argc, char** argv) {
     //read from gevent and check fro errors
     char buf[BUF_SZ];
     while(1){
-        int res = read(fd,buf,BUF_SZ);
-        if(res < 0){
-            fprintf(stderr, "Unable to read gevent");
-        }if(0 == res){
-            printf("no data availbe\n");
-        }
+        size_t nread = read(fd,buf,BUF_SZ);
+        if (-1 == nread) {
+			if (errno == EAGAIN) {
+				printf("stop the blocking call to read\n");
+			} else {
+				perror("something wrong");
+			}
+
+			sleep(1);
+			continue;
+        }else if (0 == nread) {
+			if (errno == EAGAIN) {
+				printf("stop the blocking call to read\n");
+				sleep(1);
+				continue;
+			} else {
+				// end of file?
+				break;
+			}
+		} else {
+			//do something
+		}
         
     }
     
