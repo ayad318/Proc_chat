@@ -17,26 +17,16 @@ int main(int argc, char** argv) {
         fprintf(stderr, "Unable to create gevent"); 
     }
     //open gevent for read only and check error
-    /*int fd = open(CHANNEL_NAME, O_RDONLY);
-    if(-1 == fd){
-        fprintf(stderr, "Unable to open gevent");
-    }*/
 
 
     FILE* read_channel = fopen(CHANNEL_NAME, "r");
     char buf[BUF_SZ];
 
-    while(fgets(buf,BUF_SZ,read_channel) != NULL){
-
-    };
-    fclose(read_channel);
-    /*if(read(fd,buf,BUF_SZ) == -1){
-        fprintf(stderr, "Unable to read gevent");
+    while(1){
+        fgets(buf,BUF_SZ,read_channel);
     }
-    
-    if (close(fd) == -1){
-        fprintf(stderr, "Unable to close gevent");
-    }*/
+    // close channel
+    fclose(read_channel);
     
     return 0;
 }
