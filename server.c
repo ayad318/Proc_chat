@@ -44,14 +44,13 @@ int main(int argc, char** argv) {
 
     //read from gevent and check fro errors
     size_t nread = read(fd,buf,BUF_SZ);
-    if (nread <= 0) {
+    if (nread < 0) {
 			perror("read issues");
 			break;
 	  } else {
       buf[BUF_SZ -1 ] = '\0';
 	    printf("nread: %zd\n", nread);
-		  printf("buffer: ");
-      print_hex(buf);
+		  printf("buffer: %s", buf);
 	  }
         
   }
