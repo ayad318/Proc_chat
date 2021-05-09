@@ -13,7 +13,6 @@ test:
 
 clean:
 	rm -f procchat
-	rm -f gevent
 
 git:
 	git add .
