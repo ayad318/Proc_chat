@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
     //open gevent for read only and check error
 
 
-    int fd = open(CHANNEL_NAME, "r");
+    int fd = open(CHANNEL_NAME, O_RDONLY);
     lseek(fd, 0, SEEK_SET);
     char buf[BUF_SZ];
     read(fd, buf, BUF_SZ);
