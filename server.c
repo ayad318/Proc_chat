@@ -27,10 +27,6 @@ void print_hex(const char *s){
 }
 
 
-void connect(unsigned char identifier[], unsigned char domain[]){
-	
-}
-
 short toShort(unsigned char* bytes) {
     
 	return (short)(((unsigned char)bytes[1] << 8) | (unsigned char)bytes[0]);
@@ -78,8 +74,8 @@ int main(int argc, char** argv) {
         		memcpy(domain,buf+BUF_SZ+IDENT_SZ,DOMAIN_SZ);
 				char RD_filename[IDENT_SZ + 4];
 				char WR_filename[IDENT_SZ + 4];
-				strcpy(RD_filename,identifer);
-				strcpy(WR_filename,identifer);
+				strcpy(RD_filename,(char)identifer);
+				strcpy(WR_filename,(char)identifer);
 
 				//make domain and check error
 				if(mkdir(domain,0777) == -1){
