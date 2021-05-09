@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
         if(res < 0){
             fprintf(stderr, "Unable to read gevent");
         }if(0 == res){
-            printf("no data availbe\n")
+            printf("no data availbe\n");
         }
         
     }
