@@ -62,9 +62,9 @@ int main(int argc, char** argv) {
     }else if ( 0 == nread){
       sleep (5);
     }else {
-      strncpy(type,buf,2);
+      type = buf;
       //CONNECT
-      if(1 == &type){
+      if(1 == type){
         strncpy(identifer,buf+BUFSIZ,IDENT_SZ);
         strncpy(domain,buf+BUF_SZ+IDENT_SZ,DOMAIN_SZ);
 		char RD_filename[IDENT_SZ + 4];
