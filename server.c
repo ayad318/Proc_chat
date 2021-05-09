@@ -68,6 +68,7 @@ int main(int argc, char** argv) {
       		sleep (5);
     	}else {
       		type = toShort(buf);
+			printf("type: %d\n",type);
       		//CONNECT
     		if(1 == type){
         		memcpy(identifer,buf+BUFSIZ,IDENT_SZ);
@@ -76,8 +77,8 @@ int main(int argc, char** argv) {
 				char WR_filename[IDENT_SZ + 4];
 				strcpy(RD_filename,identifer);
 				strcpy(WR_filename,identifer);
-				printf("read filename: %s\n",RD_filename);
-				printf("write filename: %s\n",WR_filename);
+				printf("read filename: %s\n",strcat(RD_filename,RD_POSTFIX));
+				printf("write filename: %s\n",strcat(WR_filename,WR_POSTFIX));
 				//make domain and check error
 				if(mkdir(domain,0777) == -1){
 					fprintf(stderr,"Failed to create domain.");
