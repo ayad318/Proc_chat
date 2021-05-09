@@ -26,9 +26,13 @@ int main(int argc, char** argv) {
         fprintf(stderr, "Unable to open gevent");
     }
 
-    //FILE* read_channel = fopen(CHANNEL_NAME, "r");
+    //read from gevent and check fro errors
     char buf[BUF_SZ];
-    while(read(fd,buf,BUF_SZ) > 0){
+    while(1){
+        int res = read(fd,buf,BUF_SZ);
+        if(res < 0){
+            fprintf(stderr, "Unable to read gevent");
+        }
         printf("Buffer: %s\n",buf);
     }
     
