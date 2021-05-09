@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
   //buffer
   char buf[BUF_SZ];
   //type
-  char type[2];
+  short type;
   //identifier
   char identifer[IDENT_SZ];
   //domain
