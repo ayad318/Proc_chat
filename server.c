@@ -30,35 +30,26 @@ int main(int argc, char** argv) {
   if((mkfifo(CHANNEL_NAME, S_IRWXU | S_IRWXG)) == -1){
       fprintf(stderr, "Unable to create gevent"); 
   }
+  
+
   //open gevent for read only and check error
   int fd = open("gevent", O_RDONLY);
   if(fd < 0){
-      fprintf(stderr, "Unable to open gevent");
+    fprintf(stderr, "Unable to open gevent");
   }
 
-  //read from gevent and check fro errors
-  char buf[BUF_SZ+1];
-  while(1){
-    size_t nread = read(fd,buf,BUF_SZ);
-    if (-1 == nread) {
-	    if (errno == EAGAIN) {
-			  printf("stop the blocking call to read\n");
-		  } else {
-			  perror("something wrong");
-			}
+  //buffer
+  char buf[BUF_SZ];
 
-		  sleep(1);
-		  continue;
-    }else if (0 == nread) {
-      if (errno == EAGAIN) {
-			  printf("stop the blocking call to read\n");
-			  sleep(1);
-			  continue;
-			} else {
-			  // end of file?
-		  }
+  while(1){
+
+    //read from gevent and check fro errors
+    size_t nread = read(fd,buf,BUF_SZ);
+    if (nread <= 0) {
+			perror("read issues");
+			break;
 	  } else {
-      buf[BUF_SZ] = '\0';
+      buf[BUF_SZ -1 ] = '\0';
 	    printf("nread: %zd\n", nread);
 		  printf("buffer: %s\n", buf);
 	  }
@@ -66,6 +57,8 @@ int main(int argc, char** argv) {
   }
     
   // close channel
-  close(fd);
+  if(close(fd) == -1){
+    fprintf(stderr, "Unable to close gevent");
+  }
   return 0;
 }
