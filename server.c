@@ -24,6 +24,10 @@ void print_hex(const char *s)
   printf("\n");
 }
 
+void connect(char* identifier, char* domain){
+
+}
+
 int main(int argc, char** argv) {
     
   // create gevent and check for error
@@ -47,12 +51,13 @@ int main(int argc, char** argv) {
     if (nread < 0) {
 			perror("read issues");
 			break;
-	  } else {
+    }else if ( 0 == nread){
+      sleep (5);
+    }else {
       buf[BUF_SZ -1 ] = '\0';
 	    printf("nread: %zd\n", nread);
-		  printf("buffer: %s", buf);
+		  printf("buffer: %s\n", buf);
 	  }
-        
   }
     
   // close channel
