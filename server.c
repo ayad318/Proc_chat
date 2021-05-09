@@ -10,6 +10,7 @@
 #include <errno.h>
 #include <sys/uio.h>
 #include <string.h>
+#include <stdint.h>
 
 #define BUF_SZ (2048)
 #define IDENT_SZ (256)
@@ -25,9 +26,17 @@ void print_hex(const char *s){
 	printf("\n");
 }
 
+
 void connect(unsigned char identifier[], unsigned char domain[]){
 	
 }
+
+short toShort(const char* bytes) {
+    
+	return (short)(((unsigned char)bytes[1] << 8) | (unsigned char)bytes[0]);
+}
+
+
 
 int main(int argc, char** argv) {
     
@@ -45,7 +54,7 @@ int main(int argc, char** argv) {
   	//buffer
   	unsigned char buf[BUF_SZ];
   	//type
-  	short type;
+  	unsigned short type;
   	//identifier
   	unsigned char identifer[IDENT_SZ];
   	//domain
@@ -62,7 +71,7 @@ int main(int argc, char** argv) {
     	}else if ( 0 == nread){
       		sleep (5);
     	}else {
-      		memcpy(type,buf,2);
+      		type = toShort(buf);
       		//CONNECT
     		if(1 == type){
         		memcpy(identifer,buf+BUFSIZ,IDENT_SZ);
