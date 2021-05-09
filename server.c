@@ -45,5 +45,6 @@ int main(int argc, char** argv) {
     
     // close channel
     close(fd);
+    fclose(CHANNEL_NAME);
     return 0;
 }
