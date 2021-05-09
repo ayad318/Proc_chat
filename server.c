@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
     if(-1 == fd){
         fprintf(stderr, "Unable to open gevent");
     }
-    FILE* read_channel = fdopen(fd, "r");
+    FILE* read_channel = fopen(CHANNEL_NAME, "r");
     //read from gevent and store and check error
     char buf[BUF_SZ];
     fgets(buf,BUF_SZ,read_channel);
