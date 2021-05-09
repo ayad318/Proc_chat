@@ -21,16 +21,18 @@ int main(int argc, char** argv) {
     if(-1 == fd){
         fprintf(stderr, "Unable to open gevent");
     }
-    
+    FILE* read_channel = fdopen(fd, "r");
     //read from gevent and store and check error
     unsigned char buf[BUF_SZ];
-    if(read(fd,buf,BUF_SZ) == -1){
+    fgets(buf,BUF_SZ,read_channel);
+    fclose(read_channel);
+    /*if(read(fd,buf,BUF_SZ) == -1){
         fprintf(stderr, "Unable to read gevent");
-    }
+    }*/
     
-    if (close(CHANNEL_NAME) == -1){
+    if (close(fd) == -1){
         fprintf(stderr, "Unable to close gevent");
-    } 
+    }
     
     return 0;
 }
