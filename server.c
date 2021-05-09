@@ -24,11 +24,11 @@ int main(int argc, char** argv) {
     
     //read from gevent and store and check error
     unsigned char buf[BUF_SZ];
-    if(read(CHANNEL_NAME,buf,BUF_SZ) == -1){
+    if(read(fd,buf,BUF_SZ) == -1){
         fprintf(stderr, "Unable to read gevent");
     }
     
-    if (close(CHANNEL_NAME) == -1){
+    if (fclose(CHANNEL_NAME) == -1){
         fprintf(stderr, "Unable to close gevent");
     } 
     
