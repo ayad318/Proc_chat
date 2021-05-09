@@ -31,7 +31,6 @@ int main(int argc, char** argv) {
       fprintf(stderr, "Unable to create gevent"); 
   }
   
-
   //open gevent for read only and check error
   int fd = open("gevent", O_RDONLY);
   if(fd < 0){
@@ -51,7 +50,8 @@ int main(int argc, char** argv) {
 	  } else {
       buf[BUF_SZ -1 ] = '\0';
 	    printf("nread: %zd\n", nread);
-		  printf("buffer: %s\n", buf);
+		  printf("buffer: ");
+      print_hex(buf);
 	  }
         
   }
