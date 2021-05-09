@@ -9,6 +9,8 @@
 
 #define BUF_SZ (2048)
 #define CHANNEL_NAME ("gevent")
+#define RD_POSTFIX ("_RD")
+#define WR_POSTFIX ("_WR")
 
 int main(int argc, char** argv) {
     
@@ -19,14 +21,16 @@ int main(int argc, char** argv) {
     //open gevent for read only and check error
 
 
-    FILE* read_channel = fopen(CHANNEL_NAME, "r");
+    int fd = open(CHANNEL_NAME, "r");
+    lseek(fd, 0, SEEK_SET);
     char buf[BUF_SZ];
-
-    while(1){
-        fgets(buf,BUF_SZ,read_channel);
-    }
-    // close channel
-    fclose(read_channel);
+    read(fd, buf, BUF_SZ);
     
+
+    //while(1){
+    //   fgets(buf,BUF_SZ,read_channel);
+    //}
+    // close channel
+    close(fd);
     return 0;
 }
