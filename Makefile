@@ -14,3 +14,7 @@ test:
 clean:
 	rm -f procchat
 
+git:
+	git add .
+	git commit -m "hello"
+	git push
