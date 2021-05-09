@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
     FILE* read_channel = fopen(CHANNEL_NAME, "r");
     //read from gevent and store and check error
     char buf[BUF_SZ];
-    fgets(buf,BUF_SZ,read_channel);
+    while(fgets(buf,BUF_SZ,read_channel) != NULL);
     fclose(read_channel);
     /*if(read(fd,buf,BUF_SZ) == -1){
         fprintf(stderr, "Unable to read gevent");
