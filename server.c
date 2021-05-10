@@ -50,9 +50,9 @@ int main(int argc, char** argv) {
   	unsigned char buf[BUF_SZ];
   	
   	//identifier
-  	char identifer[IDENT_SZ];
+  	char* identifer;
   	//domain
-  	char domain[DOMAIN_SZ];
+  	char* domain;
 
 
   	while(1){
@@ -76,11 +76,21 @@ int main(int argc, char** argv) {
 			}
 			//CONNECT
 			if(*buf == 0 || *buf+1 == 0){
-
-        		memcpy(identifer,buf+BUFSIZ,IDENT_SZ);
-        		memcpy(domain,buf+BUF_SZ+IDENT_SZ,DOMAIN_SZ);
-				char RD_filename[IDENT_SZ + 4];
-				char WR_filename[IDENT_SZ + 4];
+				for(int i = 0; i < 256; i++){
+					identifer[i] = buf[i+2];
+					if(buf[i+2] == 0){
+						break;
+					}
+				}
+				for(int i = 0; i < 256; i++){
+					domain[i] = buf[i+258];
+					if(buf[i+258] == 0){
+						break;
+					}
+				}
+        		
+				char* RD_filename;
+				char* WR_filename;
 				strcpy(RD_filename,identifer);
 				strcpy(WR_filename,identifer);
 				printf("read filename: %s\n",strcat(RD_filename,RD_POSTFIX));
