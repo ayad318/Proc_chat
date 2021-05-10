@@ -27,13 +27,6 @@ void print_hex(const char *s){
 }
 
 
-short toShort(unsigned char* bytes) {
-    
-	return (short)(((unsigned char)bytes[1] << 8) | (unsigned char)bytes[0]);
-}
-
-
-
 int main(int argc, char** argv) {
     
   	// create gevent and check for error
