@@ -55,8 +55,7 @@ int main(int argc, char** argv) {
 
   	while(1){
 
-		
-		
+		memset(buf, '\0', BUF_SZ);
     	//read from gevent and check fro errors
     	size_t nread = read(fd,buf,BUF_SZ);
     	if (nread < 0) {
@@ -67,15 +66,15 @@ int main(int argc, char** argv) {
 			sleep(5);
 		}else {
 			
-			printf("nread: %zd\n", nread);
-			printf("buffer: %s\n", buf);
+			//printf("nread: %zd\n", nread);
+			//printf("buffer: %s\n", buf);
       		//IGNORE JUST FOR QUITTING THE LOOP
 			if(*buf == 'q'){
 				break;
 			}
 
 			//CONNECT
-			if(*buf == 0 || *buf+1 == 0){
+			if(*buf == 0 && *(buf+1) == 0){
 				for(int i = 0; i < 256; i++){
 					identifer[i] = buf[i+2];
 					if(buf[i+2] == 0){
@@ -88,6 +87,8 @@ int main(int argc, char** argv) {
 						break;
 					}
 				}
+				identifer[255] = 0;
+				domain[255] = 0;
         		
 				char RD_filename[260];
 				char WR_filename[260];
@@ -97,9 +98,9 @@ int main(int argc, char** argv) {
 				printf("write filename: %s\n",strcat(WR_filename,WR_POSTFIX));
 				printf("domain name: %s",domain);
 				//make domain and check error
-				//if(mkdir(domain,0777) == -1){
-					//fprintf(stderr,"Failed to create domain.");
-				//}
+				if(mkdir(domain,0777) == -1){
+					fprintf(stderr,"Failed to create domain.");
+				}
 
 				
 				//mkfifo(RD_filename,0777);
