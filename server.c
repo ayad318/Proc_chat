@@ -82,7 +82,7 @@ int main(int argc, char** argv) {
 			}
 
 			//CONNECT
-			if(*buf == 0 || *buf+1 == 0){
+			if(*buf == '0' || *buf+1 == '0'){
 				for(int i = 0; i < 256; i++){
 					identifer[i] = buf[i+2];
 					if(buf[i+2] == 0){
@@ -104,19 +104,19 @@ int main(int argc, char** argv) {
 				printf("write filename: %s\n",strcat(WR_filename,WR_POSTFIX));
 				printf("domain name: %s",domain);
 				//make domain and check error
-				if(mkdir(domain,0777) == -1){
-					fprintf(stderr,"Failed to create domain.");
-				}
+				//if(mkdir(domain,0777) == -1){
+					//fprintf(stderr,"Failed to create domain.");
+				//}
 
 				
-				mkfifo(RD_filename,0777);
-				mkfifo(WR_filename,0777);
+				//mkfifo(RD_filename,0777);
+				//mkfifo(WR_filename,0777);
 
 				//client handler
-				int client_handler = fork();
-				if(0 == client_handler){
-					printf("hello from child");
-				}
+				//int client_handler = fork();
+				//if(0 == client_handler){
+				//	printf("hello from child");
+				//}
       		}
 		}
 	}
