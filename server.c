@@ -90,8 +90,8 @@ int main(int argc, char** argv) {
 				identifer[255] = 0;
 				domain[255] = 0;
         		
-				char RD_filename[260];
-				char WR_filename[260];
+				char RD_filename[260+256];
+				char WR_filename[260+256];
 				strcpy(RD_filename,identifer);
 				strcpy(WR_filename,identifer);
 				printf("read filename: %s\n",strcat(RD_filename,RD_POSTFIX));
@@ -103,8 +103,12 @@ int main(int argc, char** argv) {
 				}
 
 				
-				mkfifo(RD_filename,0777);
-				mkfifo(WR_filename,0777);
+				if(mkfifo(RD_filename,0777) == -1){
+      				fprintf(stderr, "Unable to create RD."); 
+  				}
+				if(mkfifo(WR_filename,0777) == -1){
+      				fprintf(stderr, "Unable to create WR."); 
+  				}
 
 				//client handler
 				int client_handler = fork();
