@@ -30,20 +30,20 @@ void print_hex(const char *s){
 int main(int argc, char** argv) {
     
   	// create gevent and check for error
-	printf("hello\n");
+	//printf("hello\n");
   	if((mkfifo(CHANNEL_NAME, S_IRWXU | S_IRWXG)) == -1){
       	fprintf(stderr, "Unable to create gevent"); 
   	}
   
   	//open gevent for read only and check error
-	printf("blocking\n");
+	//printf("blocking\n");
   	int fd = open("gevent", O_RDONLY);
   	if(fd < 0){
 		if(errno != EEXIST){
 			fprintf(stderr, "Unable to open gevent");
 		}
   	}
-	printf("open gevent\n");
+	//printf("open gevent\n");
   	//buffer
   	unsigned char buf[BUF_SZ];
   	
@@ -62,8 +62,8 @@ int main(int argc, char** argv) {
 			perror("read issues");
 			break;
     	}else if ( 0 == nread){
-			printf("no data\n");
-			sleep(5);
+			//printf("no data\n");
+			//sleep(5);
 		}else {
 			
 			//printf("nread: %zd\n", nread);
@@ -103,14 +103,14 @@ int main(int argc, char** argv) {
 				}
 
 				
-				//mkfifo(RD_filename,0777);
-				//mkfifo(WR_filename,0777);
+				mkfifo(RD_filename,0777);
+				mkfifo(WR_filename,0777);
 
 				//client handler
-				//int client_handler = fork();
-				//if(0 == client_handler){
-				//	printf("hello from child");
-				//}
+				int client_handler = fork();
+				if(0 == client_handler){
+					printf("hello from child");
+				}
       		}
 		}
 	}
