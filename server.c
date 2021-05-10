@@ -44,7 +44,9 @@ int main(int argc, char** argv) {
   	//open gevent for read only and check error
   	int fd = open("gevent", O_RDONLY);
   	if(fd < 0){
-		fprintf(stderr, "Unable to open gevent");
+		if(errno != EEXIST){
+			fprintf(stderr, "Unable to open gevent");
+		}
   	}
   	//buffer
   	unsigned char buf[BUF_SZ];
@@ -67,6 +69,7 @@ int main(int argc, char** argv) {
 			perror("read issues");
 			break;
     	}else if ( 0 == nread){
+			printf("no data");
 			sleep(5);
 		}else {
 			
@@ -95,13 +98,15 @@ int main(int argc, char** argv) {
 				strcpy(WR_filename,identifer);
 				printf("read filename: %s\n",strcat(RD_filename,RD_POSTFIX));
 				printf("write filename: %s\n",strcat(WR_filename,WR_POSTFIX));
+				printf("domain name: %s",domain);
 				//make domain and check error
 				if(mkdir(domain,0777) == -1){
 					fprintf(stderr,"Failed to create domain.");
 				}
-        
-				mkfifo(strcat(RD_filename,RD_POSTFIX),0777);
-				mkfifo(strcat(WR_filename,WR_POSTFIX),0777);
+
+				
+				mkfifo(RD_filename,0777);
+				mkfifo(WR_filename,0777);
 
 				//client handler
 				int client_handler = fork();
@@ -117,5 +122,7 @@ int main(int argc, char** argv) {
     	fprintf(stderr, "Unable to close gevent");
   	}
 	unlink(CHANNEL_NAME);
+	unlink("jhgefe uegkef");
+	unlink("jhgefe uegkef");
   	return 0;
 }
