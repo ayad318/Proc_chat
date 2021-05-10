@@ -82,7 +82,7 @@ int main(int argc, char** argv) {
 			}
 
 			//CONNECT
-			if(*buf == '0' || *buf+1 == '0'){
+			if(*buf == 0 || *buf+1 == 0){
 				for(int i = 0; i < 256; i++){
 					identifer[i] = buf[i+2];
 					if(buf[i+2] == 0){
