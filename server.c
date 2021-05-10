@@ -50,9 +50,9 @@ int main(int argc, char** argv) {
   	unsigned char buf[BUF_SZ];
   	
   	//identifier
-  	char* identifer;
+  	char identifer[IDENT_SZ];
   	//domain
-  	char* domain;
+  	char domain[DOMAIN_SZ];
 
 
   	while(1){
@@ -89,8 +89,8 @@ int main(int argc, char** argv) {
 					}
 				}
         		
-				char* RD_filename;
-				char* WR_filename;
+				char RD_filename[260];
+				char WR_filename[260];
 				strcpy(RD_filename,identifer);
 				strcpy(WR_filename,identifer);
 				printf("read filename: %s\n",strcat(RD_filename,RD_POSTFIX));
