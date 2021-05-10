@@ -62,12 +62,12 @@ int main(int argc, char** argv) {
 			perror("read issues");
 			break;
     	}else if ( 0 == nread){
-			//printf("no data\n");
-			//sleep(5);
+			printf("no data\n");
+			sleep(5);
 		}else {
 			
-			//printf("nread: %zd\n", nread);
-			//printf("buffer: %s\n", buf);
+			printf("nread: %zd\n", nread);
+			printf("buffer: %s\n", buf);
       		//IGNORE JUST FOR QUITTING THE LOOP
 			if(*buf == 'q'){
 				break;
@@ -113,11 +113,12 @@ int main(int argc, char** argv) {
 				if(mkfifo(WR_filename,0777) == -1){
       				fprintf(stderr, "Unable to create WR."); 
   				}
-
+				
 				//client handler
 				int client_handler = fork();
 				if(0 == client_handler){
 					printf("hello from child");
+					return 1;
 				}
       		}
 		}
@@ -128,5 +129,6 @@ int main(int argc, char** argv) {
     	fprintf(stderr, "Unable to close gevent");
   	}
 	unlink(CHANNEL_NAME);
+	
   	return 0;
 }
