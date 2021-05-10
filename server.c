@@ -93,6 +93,7 @@ int main(int argc, char** argv) {
 				mkfifo(strcat(RD_filename,RD_POSTFIX),0777);
 				mkfifo(strcat(WR_filename,WR_POSTFIX),0777);
 
+				//client handler
 				int client_handler = fork();
 				if(0 == client_handler){
 					printf("hello from child");
