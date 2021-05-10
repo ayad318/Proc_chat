@@ -37,17 +37,20 @@ short toShort(unsigned char* bytes) {
 int main(int argc, char** argv) {
     
   	// create gevent and check for error
+	printf("hello\n");
   	if((mkfifo(CHANNEL_NAME, S_IRWXU | S_IRWXG)) == -1){
       	fprintf(stderr, "Unable to create gevent"); 
   	}
   
   	//open gevent for read only and check error
+	printf("blocking\n");
   	int fd = open("gevent", O_RDONLY);
   	if(fd < 0){
 		if(errno != EEXIST){
 			fprintf(stderr, "Unable to open gevent");
 		}
   	}
+	printf("open gevent\n");
   	//buffer
   	unsigned char buf[BUF_SZ];
   	
@@ -60,23 +63,24 @@ int main(int argc, char** argv) {
   	while(1){
 
 		
-		for(int i = 0; i< BUF_SZ; i++){
-			buf[i] = 0;
-		}
+		
     	//read from gevent and check fro errors
     	size_t nread = read(fd,buf,BUF_SZ);
     	if (nread < 0) {
 			perror("read issues");
 			break;
     	}else if ( 0 == nread){
-			printf("no data");
+			printf("no data\n");
 			sleep(5);
 		}else {
 			
+			printf("nread: %zd\n", nread);
+			printf("buffer: %s\n", buf);
       		//IGNORE JUST FOR QUITTING THE LOOP
 			if(*buf == 'q'){
 				break;
 			}
+
 			//CONNECT
 			if(*buf == 0 || *buf+1 == 0){
 				for(int i = 0; i < 256; i++){
@@ -122,7 +126,5 @@ int main(int argc, char** argv) {
     	fprintf(stderr, "Unable to close gevent");
   	}
 	unlink(CHANNEL_NAME);
-	unlink("jhgefe uegkef");
-	unlink("jhgefe uegkef");
   	return 0;
 }
