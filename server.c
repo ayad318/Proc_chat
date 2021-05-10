@@ -99,7 +99,11 @@ int main(int argc, char** argv) {
 				printf("domain name: %s",domain);
 				//make domain and check error
 				if(mkdir(domain,0777) == -1){
-					fprintf(stderr,"Failed to create domain.");
+					if(errno == EEXIST){
+
+					}else{
+						fprintf(stderr,"Failed to create domain.");
+					}
 				}
 
 				
