@@ -44,13 +44,11 @@ int main(int argc, char** argv) {
   	//open gevent for read only and check error
   	int fd = open("gevent", O_RDONLY);
   	if(fd < 0){
-    	fprintf(stderr, "Unable to open gevent");
+		fprintf(stderr, "Unable to open gevent");
   	}
-
   	//buffer
   	unsigned char buf[BUF_SZ];
-  	//type
-  	unsigned short type;
+  	
   	//identifier
   	char identifer[IDENT_SZ];
   	//domain
@@ -59,18 +57,26 @@ int main(int argc, char** argv) {
 
   	while(1){
 
+		
+		for(int i = 0; i< BUF_SZ; i++){
+			buf[i] = 0;
+		}
     	//read from gevent and check fro errors
     	size_t nread = read(fd,buf,BUF_SZ);
     	if (nread < 0) {
 			perror("read issues");
 			break;
     	}else if ( 0 == nread){
-      		sleep (5);
-    	}else {
-      		type = toShort(buf);
-			printf("type: %d\n",type);
-      		//CONNECT
-    		if(1 == type){
+			sleep(5);
+		}else {
+			
+      		//IGNORE JUST FOR QUITTING THE LOOP
+			if(*buf == 'q'){
+				break;
+			}
+			//CONNECT
+			if(*buf == 0 || *buf+1 == 0){
+
         		memcpy(identifer,buf+BUFSIZ,IDENT_SZ);
         		memcpy(domain,buf+BUF_SZ+IDENT_SZ,DOMAIN_SZ);
 				char RD_filename[IDENT_SZ + 4];
@@ -99,5 +105,6 @@ int main(int argc, char** argv) {
   	if(close(fd) == -1){
     	fprintf(stderr, "Unable to close gevent");
   	}
+	unlink(CHANNEL_NAME);
   	return 0;
 }
