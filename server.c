@@ -92,8 +92,10 @@ int main(int argc, char** argv) {
         		
 				char RD_filename[260+256];
 				char WR_filename[260+256];
-				strcpy(RD_filename,identifer);
-				strcpy(WR_filename,identifer);
+				strcpy(RD_filename,domain);
+				strcpy(WR_filename,domain);
+				strcat(RD_filename,identifer);
+				strcat(WR_filename,identifer);
 				printf("read filename: %s\n",strcat(RD_filename,RD_POSTFIX));
 				printf("write filename: %s\n",strcat(WR_filename,WR_POSTFIX));
 				printf("domain name: %s",domain);
@@ -118,7 +120,7 @@ int main(int argc, char** argv) {
 				int client_handler = fork();
 				if(0 == client_handler){
 					printf("hello from child");
-					return 1;
+					
 				}
       		}
 		}
