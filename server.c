@@ -94,6 +94,8 @@ int main(int argc, char** argv) {
 				char WR_filename[260+256];
 				strcpy(RD_filename,domain);
 				strcpy(WR_filename,domain);
+				strcat(RD_filename,"/");
+				strcat(WR_filename,"/");
 				strcat(RD_filename,identifer);
 				strcat(WR_filename,identifer);
 				printf("read filename: %s\n",strcat(RD_filename,RD_POSTFIX));
