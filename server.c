@@ -61,7 +61,7 @@ int main(int argc, char** argv) {
 			perror("read issues");
 			break;
     	}else if ( 0 == nread){
-			printf("no data\n");
+			//printf("no data\n");
 		}else {
 			
 			printf("nread: %zd\n", nread);
@@ -99,8 +99,8 @@ int main(int argc, char** argv) {
 				strcat(RD_filename,RD_POSTFIX);
 				strcat(WR_filename,WR_POSTFIX);
 				fprintf(stdout,"read filename: %s\n",RD_filename);
-				printf("write filename: %s\n",WR_filename);
-				printf("domain name: %s",domain);
+				fprintf(stdout,"write filename: %s\n",WR_filename);
+				fprintf(stdout,"domain name: %s\n",domain);
 				//make domain and check error
 				if(mkdir(domain,0777) == -1){
 					if(errno == EEXIST){
@@ -124,7 +124,7 @@ int main(int argc, char** argv) {
 					fprintf(stderr,"Failed to create client handler");
 				}
 				if(0 == client_handler){
-					printf("hello from child");
+					fprintf(stdout,"hello from child");
 					
 				}else{
 					continue;
