@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
 		}else {
 			
 			printf("nread: %zd\n", nread);
-			printf("buffer: %s\n", buf);
+			printf("buffer: %x\n", buf);
       		//IGNORE JUST FOR QUITTING THE LOOP
 			if(*buf == 'q'){
 				break;
