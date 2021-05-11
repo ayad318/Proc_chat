@@ -55,7 +55,6 @@ int main(int argc, char** argv) {
 
   	while(1){
 
-		memset(buf, '\0', BUF_SZ);
     	//read from gevent and check fro errors
     	size_t nread = read(fd,buf,BUF_SZ);
     	if (nread < 0) {
@@ -63,7 +62,6 @@ int main(int argc, char** argv) {
 			break;
     	}else if ( 0 == nread){
 			printf("no data\n");
-			sleep(5);
 		}else {
 			
 			printf("nread: %zd\n", nread);
@@ -98,8 +96,10 @@ int main(int argc, char** argv) {
 				strcat(WR_filename,"/");
 				strcat(RD_filename,identifer);
 				strcat(WR_filename,identifer);
-				printf("read filename: %s\n",strcat(RD_filename,RD_POSTFIX));
-				printf("write filename: %s\n",strcat(WR_filename,WR_POSTFIX));
+				strcat(RD_filename,RD_POSTFIX);
+				strcat(WR_filename,WR_POSTFIX);
+				fprintf(stdout,"read filename: %s\n",RD_filename);
+				printf("write filename: %s\n",WR_filename);
 				printf("domain name: %s",domain);
 				//make domain and check error
 				if(mkdir(domain,0777) == -1){
@@ -120,9 +120,14 @@ int main(int argc, char** argv) {
 				
 				//client handler
 				int client_handler = fork();
+				if(client_handler < 0){
+					fprintf(stderr,"Failed to create client handler");
+				}
 				if(0 == client_handler){
 					printf("hello from child");
 					
+				}else{
+					continue;
 				}
       		}
 		}
