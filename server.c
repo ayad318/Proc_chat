@@ -169,7 +169,7 @@ int main(int argc, char** argv) {
 								for(int i = 0; i < MSG_SZ; i++){
 									message[i] = buffer[i+2];
 								}
-								fprintf("message: %s\n",message);
+								fprintf(stderr,"message: %s\n",message);
 								//make receive binary
 								//type
 								receive_buf[1] = 3;
@@ -181,7 +181,7 @@ int main(int argc, char** argv) {
 								for(int i = 0; i < MSG_SZ; i++){
 									receive_buf[i+258] = message[i];
 								}
-								fprintf("receiveid message %s",receive_buf);
+								fprintf(stderr,"receiveid message %s",receive_buf);
 
 								
 								//open directory and check error
