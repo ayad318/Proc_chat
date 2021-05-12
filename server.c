@@ -165,10 +165,7 @@ int main(int argc, char** argv) {
 							//SAY
 							//fprintf(stderr,"buffer 1 and 2: %x %x\n",buffer[0],buffer[1]);
 							if(*buffer == 1 && *(buffer + 1) == 0){
-								//copy message 
-								for(int i = 0; i < MSG_SZ; i++){
-									message[i] = buffer[i+2];
-								}
+								
 								//fprintf(stderr,"message: %s\n",message);
 								//fprintf(stderr,"ident: %s\n",identifer);
 								//fprintf(stderr,"domain: %s\n",domain);
