@@ -11,20 +11,16 @@
 #include <sys/uio.h>
 #include <string.h>
 #include <stdint.h>
+#include <dirent.h>
+#include <sys/select.h>
 
 #define BUF_SZ (2048)
 #define IDENT_SZ (256)
 #define DOMAIN_SZ (256)
+#define MSG_SZ (1790)
 #define CHANNEL_NAME ("gevent")
 #define RD_POSTFIX ("_RD")
 #define WR_POSTFIX ("_WR")
-
-
-void print_hex(const char *s){
-	while(*s)
-  		printf("%02x", (unsigned int) *s++);
-	printf("\n");
-}
 
 
 int main(int argc, char** argv) {
@@ -52,6 +48,8 @@ int main(int argc, char** argv) {
   	//domain
   	char domain[DOMAIN_SZ];
 
+	int rd_fd;
+	int wr_fd;
 
   	while(1){
 
@@ -64,8 +62,8 @@ int main(int argc, char** argv) {
 			//printf("no data\n");
 		}else {
 			
-			printf("nread: %zd\n", nread);
-			printf("buffer: %s\n", buf);
+			//printf("nread: %zd\n", nread);
+			//printf("buffer: %s\n", buf);
       		//IGNORE JUST FOR QUITTING THE LOOP
 			if(*buf == 'q'){
 				break;
@@ -73,20 +71,23 @@ int main(int argc, char** argv) {
 
 			//CONNECT
 			if(*buf == 0 && *(buf+1) == 0){
+				//read indentifier
 				for(int i = 0; i < 256; i++){
 					identifer[i] = buf[i+2];
 					if(buf[i+2] == 0){
 						break;
 					}
 				}
+				//read domain
 				for(int i = 0; i < 256; i++){
 					domain[i] = buf[i+258];
 					if(buf[i+258] == 0){
 						break;
 					}
 				}
-				identifer[255] = 0;
-				domain[255] = 0;
+
+				identifer[255] = '\0';
+				domain[255] = '\0';
         		
 				char RD_filename[260+256];
 				char WR_filename[260+256];
@@ -98,9 +99,9 @@ int main(int argc, char** argv) {
 				strcat(WR_filename,identifer);
 				strcat(RD_filename,RD_POSTFIX);
 				strcat(WR_filename,WR_POSTFIX);
-				fprintf(stdout,"read filename: %s\n",RD_filename);
-				fprintf(stdout,"write filename: %s\n",WR_filename);
-				fprintf(stdout,"domain name: %s\n",domain);
+				//fprintf(stdout,"read filename: %s\n",RD_filename);
+				//fprintf(stdout,"write filename: %s\n",WR_filename);
+				//fprintf(stdout,"domain name: %s\n",domain);
 				//make domain and check error
 				if(mkdir(domain,0777) == -1){
 					if(errno == EEXIST){
@@ -110,11 +111,11 @@ int main(int argc, char** argv) {
 					}
 				}
 
-				
-				if(mkfifo(RD_filename,0777) == -1){
+				//create WR and RD FIFO and check error
+				if(rd_fd = mkfifo(RD_filename,0777) == -1){
       				fprintf(stderr, "Unable to create RD."); 
   				}
-				if(mkfifo(WR_filename,0777) == -1){
+				if(wr_fd = mkfifo(WR_filename,0777) == -1){
       				fprintf(stderr, "Unable to create WR."); 
   				}
 				
@@ -123,11 +124,112 @@ int main(int argc, char** argv) {
 				if(client_handler < 0){
 					fprintf(stderr,"Failed to create client handler");
 				}
-				if(0 == client_handler){
-					fprintf(stdout,"hello from child");
-					
-				}else{
-					continue;
+				else if(0 == client_handler){
+					unsigned char* buffer[BUF_SZ];
+					char message[MSG_SZ];
+					unsigned char* receive_buf[BUF_SZ];
+					//fprintf(stdout,"hello from child");
+					int rd_fd;
+					//open RD and WR files
+					int client_to_clienthandler = open(WR_filename,O_RDONLY);
+					int clienthandler_to_client = open(RD_filename,O_WRONLY);
+
+					// inital set for select to use later
+					fd_set wfds;
+					int retval;
+
+					//open domain and read from it
+					DIR *dir;
+					struct dirent *ent;
+					//read from WR
+					while(1){
+
+						//read from client and check error
+						size_t nread_b = read(client_to_clienthandler,buffer,BUF_SZ);
+    					if (nread_b < 0) {
+							perror("read issues");
+							break;
+    					}else if ( 0 == nread_b){
+							//printf("no data\n");
+						}else{
+							//SAY
+							if(*buffer == 0 && *(buffer+1) == 1){
+								//copy message 
+								for(int i = 0; i < MSG_SZ; i++){
+									message[i] = buffer[i+2];
+								}
+
+								//make receive binary
+								//type
+								receive_buf[1] = 3;
+								//identifier
+								for(int i = 0; i < IDENT_SZ; i++){
+									receive_buf[i+2] = identifer[i];
+								}
+								//message
+								for(int i = 0; i < MSG_SZ; i++){
+									receive_buf[i+258] = message[i];
+								}
+
+								
+								//open directory and check error
+								if ((dir = opendir (domain)) == NULL){
+									fprintf(stderr, " failed to open directory");
+								}
+								//loop thourgh the files and send to every file that has _RD as postic and is not the identifier
+								while ((ent = readdir (dir)) != NULL) {
+									//check is identifer
+    								if(strncmp(identifer,ent->d_name,strlen(identifer))){
+										continue;
+									}else{
+										//check if _RD and write to it
+										if(strcmp(ent->d_name[strlen(ent->d_name - 3)],RD_POSTFIX)){
+											//open FIFO and write to it
+											rd_fd = open(ent->d_name,O_RDWR | O_NONBLOCK);
+											if(rd_fd < 0){
+												fprintf(stderr, "Unable to open _RD by CH");
+  											}
+
+											//write to rd_fd
+											if(write(rd_fd, receive_buf, BUF_SZ) < 0){
+												fprintf(stderr,"Unable to RECEIVE");
+											}
+											if(close(rd_fd) == -1){
+    											fprintf(stderr, "Unable to close _RD file");
+  											}
+										}
+									}
+  								}
+								//close directory
+								closedir (dir);
+
+							}
+
+							//SAYCONT
+							if(*buffer == 0 && *(buffer+1) == 2){
+								//copy message 
+								for(int i = 0; i < MSG_SZ-1; i++){
+
+									message[i] = buffer[i+2];
+									if(255 == buffer[i+2]){
+										break;
+									}
+								}
+								//termination byte
+								message[MSG_SZ-1] = buffer[BUF_SZ-1];
+
+								receive_buf[1] = 4;
+								for(int i = 0; i < IDENT_SZ; i++){
+									receive_buf[i+2] = identifer[i];
+								}
+								for(int i = 0; i < MSG_SZ; i++){
+									receive_buf[i+258] = message[i];
+								}
+							}
+
+						}
+						
+					}
 				}
       		}
 		}
