@@ -188,7 +188,7 @@ int main(int argc, char** argv) {
 										filename_sz = strlen(ent->d_name);
 										if(strcmp(ent->d_name + filename_sz - 4 ,RD_POSTFIX)){
 											//open FIFO and write to it
-											rec_fd = open(ent->d_name,O_RDWR | O_NONBLOCK);
+											rec_fd = open(ent->d_name,O_WRONLY | O_NONBLOCK);
 											if(rec_fd < 0){
 												fprintf(stderr, "Unable to open _RD by CH");
   											}
