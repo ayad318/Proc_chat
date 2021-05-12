@@ -155,6 +155,7 @@ int main(int argc, char** argv) {
 						fprintf(stderr,"before read\n");
 						size_t nread_b = read(client_to_clienthandler,buffer,BUF_SZ);
 						fprintf(stderr,"read succeded\n");
+						fprintf(stderr,"nread: %d",nread_b);
     					if (nread_b < 0) {
 							perror("read issues");
 							break;
@@ -185,8 +186,8 @@ int main(int argc, char** argv) {
 								if ((dir = opendir (domain)) == NULL){
 									fprintf(stderr, " failed to open directory");
 								}
-								fprintf(stdout,"hello\n");
-								fprintf(stderr,"hello\n");
+								
+								fprintf(stderr,"opened directory\n");
 								//loop thourgh the files and send to every file that has _RD as postic and is not the identifier
 								while ((ent = readdir (dir)) != NULL) {
 									//check is identifer
