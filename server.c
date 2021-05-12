@@ -192,6 +192,7 @@ int main(int argc, char** argv) {
 										if(strcmp(ent->d_name + filename_sz - 4 ,RD_POSTFIX)){
 											//open FIFO and write to it
 											sprintf(write_path,"%s/%s",domain,ent->d_name);
+											fprintf(stdout,write_path);
 											rec_fd = open(write_path,O_WRONLY | O_NONBLOCK);
 											if(rec_fd < 0){
 												fprintf(stderr, "Unable to open _RD by CH");
