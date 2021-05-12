@@ -99,7 +99,7 @@ int main(int argc, char** argv) {
 				strcat(WR_filename,identifer);
 				strcat(RD_filename,RD_POSTFIX);
 				strcat(WR_filename,WR_POSTFIX);
-				
+
 				//fprintf(stdout,"read filename: %s\n",RD_filename);
 				//fprintf(stdout,"write filename: %s\n",WR_filename);
 				//fprintf(stdout,"domain name: %s\n",domain);
@@ -163,7 +163,7 @@ int main(int argc, char** argv) {
 							//printf("no data\n");
 						}else{
 							//SAY
-							fprintf(stderr,"buffer 1 and 2: %x %x\n",buffer[0],buffer[1]);
+							//fprintf(stderr,"buffer 1 and 2: %x %x\n",buffer[0],buffer[1]);
 							if(*buffer == 1 && *(buffer + 1) == 0){
 								//copy message 
 								for(int i = 0; i < MSG_SZ; i++){
@@ -179,7 +179,7 @@ int main(int argc, char** argv) {
 									receive_buf[i] = 0;
 								}
 								//type
-								receive_buf[1] = 3;
+								receive_buf[0] = 3;
 
 								//identifier
 								for(int i = 0; i < IDENT_SZ; i++){
