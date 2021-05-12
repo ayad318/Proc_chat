@@ -125,9 +125,9 @@ int main(int argc, char** argv) {
 					fprintf(stderr,"Failed to create client handler");
 				}
 				else if(0 == client_handler){
-					unsigned char* buffer[BUF_SZ];
+					unsigned char buffer[BUF_SZ];
 					char message[MSG_SZ];
-					unsigned char* receive_buf[BUF_SZ];
+					char receive_buf[BUF_SZ];
 					//fprintf(stdout,"hello from child");
 					int rec_fd;
 					//open RD and WR files
@@ -153,7 +153,7 @@ int main(int argc, char** argv) {
 							//printf("no data\n");
 						}else{
 							//SAY
-							if(*buffer == 0 && *(buffer+1) == 1){
+							if(*buffer == 0 && *buffer[1] == 1){
 								//copy message 
 								for(int i = 0; i < MSG_SZ; i++){
 									message[i] = buffer[i+2];
@@ -161,7 +161,7 @@ int main(int argc, char** argv) {
 
 								//make receive binary
 								//type
-								receive_buf[1] = 3;
+								*receive_buf[1] = 3;
 								//identifier
 								for(int i = 0; i < IDENT_SZ; i++){
 									receive_buf[i+2] = identifer[i];
