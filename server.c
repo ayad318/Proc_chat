@@ -135,8 +135,8 @@ int main(int argc, char** argv) {
 					int clienthandler_to_client = open(RD_filename,O_WRONLY);
 
 					// inital set for select to use later
-					fd_set wfds;
-					int retval;
+					//fd_set wfds;
+					//int retval;
 
 					//open domain and read from it
 					DIR *dir;
