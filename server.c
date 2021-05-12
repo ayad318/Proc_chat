@@ -197,8 +197,9 @@ int main(int argc, char** argv) {
 								while ((ent = readdir (dir)) != NULL) {
 									//check is identifer
 									fprintf(stderr,"id : %s\n",identifer);
-									fprintf(stderr,"domain name : %s\n",ent->d_name);
+									fprintf(stderr,"dname name : %s\n",ent->d_name);
     								if(strncmp(identifer,ent->d_name,strlen(identifer)) == 0){
+										fprintf(stderr,"continued\n");
 										continue;
 										
 									}else{
