@@ -211,7 +211,7 @@ int main(int argc, char** argv) {
 
 											sprintf(write_path,"%s/%s",domain,ent->d_name);
 											fprintf(stderr,"write path: %s\n",write_path);
-											rec_fd = open(write_path,O_WRONLY | O_NONBLOCK);
+											rec_fd = open(ent->d_name,O_WRONLY | O_NONBLOCK);
 											if(rec_fd < 0){
 												fprintf(stderr, "Unable to open _RD by CH");
   											}
