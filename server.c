@@ -184,20 +184,20 @@ int main(int argc, char** argv) {
 								for(int i = 0; i < MSG_SZ; i++){
 									receive_buf[i+258] = message[i];
 								}
-								fprintf(stderr,"receiveid message: %s",receive_buf);
+								fprintf(stderr,"receiveid message: %s\n",receive_buf);
 
 								
 								//open directory and check error
-								if ((dir = opendir (domain)) == NULL){
-									fprintf(stderr, " failed to open directory");
+								if ((dir = opendir(domain)) == NULL){
+									fprintf(stderr, " failed to open directory\n");
 								}
 								
 								fprintf(stderr,"opened directory\n");
 								//loop thourgh the files and send to every file that has _RD as postic and is not the identifier
 								while ((ent = readdir (dir)) != NULL) {
 									//check is identifer
-									printf("id : %s\n",identifer);
-									printf("domain name : %s\n",ent->d_name);
+									fprintf(stderr,"id : %s\n",identifer);
+									fprintf(stderr,"domain name : %s\n",ent->d_name);
     								if(strncmp(identifer,ent->d_name,strlen(identifer)) == 0){
 										continue;
 										
