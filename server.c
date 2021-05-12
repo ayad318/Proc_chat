@@ -163,7 +163,7 @@ int main(int argc, char** argv) {
 							//printf("no data\n");
 						}else{
 							//SAY
-							fprintf("buffer 1 and 2: %d %d",*buffer,*(buffer+1));
+							fprintf("buffer 1 and 2: %x %x",*buffer,*(buffer+1));
 							if(*buffer == 0 && *(buffer + 1) == 1){
 								//copy message 
 								for(int i = 0; i < MSG_SZ; i++){
