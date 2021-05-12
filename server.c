@@ -180,10 +180,12 @@ int main(int argc, char** argv) {
 								if ((dir = opendir (domain)) == NULL){
 									fprintf(stderr, " failed to open directory");
 								}
-								
+								printf("hello\n");
 								//loop thourgh the files and send to every file that has _RD as postic and is not the identifier
 								while ((ent = readdir (dir)) != NULL) {
 									//check is identifer
+									printf("id : %s\n",identifer);
+									printf("domain name : %s\n",ent->d_name);
     								if(strncmp(identifer,ent->d_name,strlen(identifer)) == 0){
 										continue;
 									}else{
@@ -198,7 +200,7 @@ int main(int argc, char** argv) {
 												fprintf(stderr, "Unable to open _RD by CH");
   											}
 
-											fprintf(stderr,"hello");
+											
 											//write to rd_fd
 											if(write(rec_fd, receive_buf, BUF_SZ) < 0){
 												fprintf(stderr,"Unable to RECEIVE");
