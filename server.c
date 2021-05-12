@@ -138,8 +138,9 @@ int main(int argc, char** argv) {
 					// inital set for select to use later
 					//fd_set wfds;
 					//int retval;
-					fprintf(stdout,"hello\n");
-					//fprintf(stderr,"hello\n");
+					//fprintf(stdout,"hello\n");
+					//printf("hello2\n");
+					fprintf(stderr,"hello\n");
 					//open domain and read from it
 					DIR *dir;
 					struct dirent *ent;
