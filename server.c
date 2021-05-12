@@ -143,6 +143,7 @@ int main(int argc, char** argv) {
 					DIR *dir;
 					struct dirent *ent;
 					//read from WR
+					size_t filename_sz;
 					while(1){
 
 						//read from client and check error
@@ -184,7 +185,8 @@ int main(int argc, char** argv) {
 										continue;
 									}else{
 										//check if _RD and write to it
-										if(strcmp((ent->d_name)[strlen(ent->d_name - 3)],RD_POSTFIX)){
+										filename_sz = strlen(ent->d_name);
+										if(strcmp(ent->d_name + filename_sz - 3 +,RD_POSTFIX)){
 											//open FIFO and write to it
 											rec_fd = open(ent->d_name,O_RDWR | O_NONBLOCK);
 											if(rec_fd < 0){
