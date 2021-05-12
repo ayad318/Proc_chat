@@ -126,7 +126,7 @@ int main(int argc, char** argv) {
 				}
 				else if(0 == client_handler){
 					unsigned char
-					 buffer[BUF_SZ];
+					buffer[BUF_SZ];
 					char message[MSG_SZ];
 					char receive_buf[BUF_SZ];
 					//fprintf(stdout,"hello from child");
@@ -164,12 +164,12 @@ int main(int argc, char** argv) {
 						}else{
 							//SAY
 							fprintf(stderr,"buffer 1 and 2: %x %x\n",buffer[0],buffer[1]);
-							if(*buffer == 0 && *(buffer + 1) == 1){
+							if(*buffer == 1 && *(buffer + 1) == 0){
 								//copy message 
 								for(int i = 0; i < MSG_SZ; i++){
 									message[i] = buffer[i+2];
 								}
-
+								fprintf("message: %s\n",message);
 								//make receive binary
 								//type
 								receive_buf[1] = 3;
@@ -181,6 +181,7 @@ int main(int argc, char** argv) {
 								for(int i = 0; i < MSG_SZ; i++){
 									receive_buf[i+258] = message[i];
 								}
+								fprintf("receiveid message %s",receive_buf);
 
 								
 								//open directory and check error
