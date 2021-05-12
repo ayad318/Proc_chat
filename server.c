@@ -189,7 +189,7 @@ int main(int argc, char** argv) {
 									}else{
 										//check if _RD and write to it
 										filename_sz = strlen(ent->d_name);
-										if(strcmp(ent->d_name + filename_sz - 4 ,RD_POSTFIX) == 0){
+										if(strcmp(ent->d_name + filename_sz - 3 ,RD_POSTFIX) == 0){
 											//open FIFO and write to it
 											sprintf(write_path,"%s/%s",domain,ent->d_name);
 											fprintf(stdout,write_path);
