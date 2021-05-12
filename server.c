@@ -144,6 +144,8 @@ int main(int argc, char** argv) {
 					struct dirent *ent;
 					//read from WR
 					size_t filename_sz;
+
+					char write_path[DOMAIN_SZ+IDENT_SZ + 2];
 					while(1){
 
 						//read from client and check error
@@ -178,6 +180,7 @@ int main(int argc, char** argv) {
 								if ((dir = opendir (domain)) == NULL){
 									fprintf(stderr, " failed to open directory");
 								}
+								
 								//loop thourgh the files and send to every file that has _RD as postic and is not the identifier
 								while ((ent = readdir (dir)) != NULL) {
 									//check is identifer
@@ -188,7 +191,8 @@ int main(int argc, char** argv) {
 										filename_sz = strlen(ent->d_name);
 										if(strcmp(ent->d_name + filename_sz - 4 ,RD_POSTFIX)){
 											//open FIFO and write to it
-											rec_fd = open(ent->d_name,O_WRONLY | O_NONBLOCK);
+											sprintf(write_path,"%s/%s",domain,ent->d_name);
+											rec_fd = open(write_path,O_WRONLY | O_NONBLOCK);
 											if(rec_fd < 0){
 												fprintf(stderr, "Unable to open _RD by CH");
   											}
