@@ -155,7 +155,7 @@ int main(int argc, char** argv) {
 						fprintf(stderr,"before read\n");
 						size_t nread_b = read(client_to_clienthandler,buffer,BUF_SZ);
 						fprintf(stderr,"read succeded\n");
-						fprintf(stderr,"nread: %zu",nread_b);
+						fprintf(stderr,"nread: %zu\n",nread_b);
     					if (nread_b < 0) {
 							perror("read issues");
 							break;
@@ -163,7 +163,7 @@ int main(int argc, char** argv) {
 							//printf("no data\n");
 						}else{
 							//SAY
-							fprintf("buffer 1 and 2: %d %d",buffer,buffer+1);
+							fprintf("buffer 1 and 2: %d %d",*buffer,*(buffer+1));
 							if(*buffer == 0 && *(buffer + 1) == 1){
 								//copy message 
 								for(int i = 0; i < MSG_SZ; i++){
