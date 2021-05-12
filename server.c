@@ -138,7 +138,8 @@ int main(int argc, char** argv) {
 					// inital set for select to use later
 					//fd_set wfds;
 					//int retval;
-
+					fprintf(stdout,"hello");
+					fprintf(stderr,"hello");
 					//open domain and read from it
 					DIR *dir;
 					struct dirent *ent;
@@ -180,7 +181,8 @@ int main(int argc, char** argv) {
 								if ((dir = opendir (domain)) == NULL){
 									fprintf(stderr, " failed to open directory");
 								}
-								printf("hello\n");
+								fprintf(stdout,"hello\n");
+								fprintf(stderr,"hello\n");
 								//loop thourgh the files and send to every file that has _RD as postic and is not the identifier
 								while ((ent = readdir (dir)) != NULL) {
 									//check is identifer
