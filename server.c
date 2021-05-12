@@ -184,12 +184,12 @@ int main(int argc, char** argv) {
 								//loop thourgh the files and send to every file that has _RD as postic and is not the identifier
 								while ((ent = readdir (dir)) != NULL) {
 									//check is identifer
-    								if(strncmp(identifer,ent->d_name,strlen(identifer))){
+    								if(strncmp(identifer,ent->d_name,strlen(identifer)) == 0){
 										continue;
 									}else{
 										//check if _RD and write to it
 										filename_sz = strlen(ent->d_name);
-										if(strcmp(ent->d_name + filename_sz - 4 ,RD_POSTFIX)){
+										if(strcmp(ent->d_name + filename_sz - 4 ,RD_POSTFIX) == 0){
 											//open FIFO and write to it
 											sprintf(write_path,"%s/%s",domain,ent->d_name);
 											fprintf(stdout,write_path);
