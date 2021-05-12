@@ -133,7 +133,7 @@ int main(int argc, char** argv) {
 					int rec_fd;
 					//open RD and WR files
 					int client_to_clienthandler = open(WR_filename,O_RDONLY);
-					int clienthandler_to_client = open(RD_filename,O_WRONLY);
+					//int clienthandler_to_client = open(RD_filename,O_WRONLY);
 
 					// inital set for select to use later
 					//fd_set wfds;
@@ -184,7 +184,7 @@ int main(int argc, char** argv) {
 										continue;
 									}else{
 										//check if _RD and write to it
-										if(strcmp(ent->d_name[strlen(ent->d_name - 3)],RD_POSTFIX)){
+										if(strcmp((ent->d_name)[strlen(ent->d_name - 3)],RD_POSTFIX)){
 											//open FIFO and write to it
 											rec_fd = open(ent->d_name,O_RDWR | O_NONBLOCK);
 											if(rec_fd < 0){
