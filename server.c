@@ -193,6 +193,7 @@ int main(int argc, char** argv) {
 												fprintf(stderr, "Unable to open _RD by CH");
   											}
 
+											fprintf(stderr,"hello");
 											//write to rd_fd
 											if(write(rec_fd, receive_buf, BUF_SZ) < 0){
 												fprintf(stderr,"Unable to RECEIVE");
