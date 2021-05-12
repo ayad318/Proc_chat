@@ -186,7 +186,7 @@ int main(int argc, char** argv) {
 									}else{
 										//check if _RD and write to it
 										filename_sz = strlen(ent->d_name);
-										if(strcmp(ent->d_name + filename_sz - 3 +,RD_POSTFIX)){
+										if(strcmp(ent->d_name + filename_sz - 3 ,RD_POSTFIX)){
 											//open FIFO and write to it
 											rec_fd = open(ent->d_name,O_RDWR | O_NONBLOCK);
 											if(rec_fd < 0){
