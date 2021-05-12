@@ -112,10 +112,10 @@ int main(int argc, char** argv) {
 				}
 
 				//create WR and RD FIFO and check error
-				if(rd_fd = mkfifo(RD_filename,0777) == -1){
+				if((rd_fd = mkfifo(RD_filename,0777)) == -1){
       				fprintf(stderr, "Unable to create RD."); 
   				}
-				if(wr_fd = mkfifo(WR_filename,0777) == -1){
+				if((wr_fd = mkfifo(WR_filename,0777)) == -1){
       				fprintf(stderr, "Unable to create WR."); 
   				}
 				
