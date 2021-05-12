@@ -155,7 +155,7 @@ int main(int argc, char** argv) {
 						fprintf(stderr,"before read\n");
 						size_t nread_b = read(client_to_clienthandler,buffer,BUF_SZ);
 						fprintf(stderr,"read succeded\n");
-						fprintf(stderr,"nread: %d",nread_b);
+						fprintf(stderr,"nread: %zu",nread_b);
     					if (nread_b < 0) {
 							perror("read issues");
 							break;
