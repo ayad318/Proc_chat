@@ -99,6 +99,7 @@ int main(int argc, char** argv) {
 				strcat(WR_filename,identifer);
 				strcat(RD_filename,RD_POSTFIX);
 				strcat(WR_filename,WR_POSTFIX);
+				
 				//fprintf(stdout,"read filename: %s\n",RD_filename);
 				//fprintf(stdout,"write filename: %s\n",WR_filename);
 				//fprintf(stdout,"domain name: %s\n",domain);
