@@ -140,7 +140,7 @@ int main(int argc, char** argv) {
 					//int retval;
 					//fprintf(stdout,"hello\n");
 					//printf("hello2\n");
-					fprintf(stderr,"hello\n");
+					//fprintf(stderr,"hello\n");
 					//open domain and read from it
 					DIR *dir;
 					struct dirent *ent;
@@ -148,10 +148,13 @@ int main(int argc, char** argv) {
 					size_t filename_sz;
 
 					char write_path[DOMAIN_SZ+IDENT_SZ + 2];
+					fprintf(stderr,"hello2\n");
 					while(1){
 
 						//read from client and check error
+						fprintf(stderr,"before read\n");
 						size_t nread_b = read(client_to_clienthandler,buffer,BUF_SZ);
+						fprintf(stderr,"read succeded\n");
     					if (nread_b < 0) {
 							perror("read issues");
 							break;
