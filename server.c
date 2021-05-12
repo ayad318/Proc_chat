@@ -194,6 +194,7 @@ int main(int argc, char** argv) {
 									printf("domain name : %s\n",ent->d_name);
     								if(strncmp(identifer,ent->d_name,strlen(identifer)) == 0){
 										continue;
+										
 									}else{
 										//check if _RD and write to it
 										filename_sz = strlen(ent->d_name);
