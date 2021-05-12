@@ -125,10 +125,9 @@ int main(int argc, char** argv) {
 					fprintf(stderr,"Failed to create client handler");
 				}
 				else if(0 == client_handler){
-					unsigned char
-					buffer[BUF_SZ];
+					unsigned char buffer[BUF_SZ];
 					char message[MSG_SZ];
-					char receive_buf[BUF_SZ];
+					unsigned char receive_buf[BUF_SZ];
 					//fprintf(stdout,"hello from child");
 					int rec_fd;
 					//open RD and WR files
@@ -155,7 +154,7 @@ int main(int argc, char** argv) {
 						//fprintf(stderr,"before read\n");
 						size_t nread_b = read(client_to_clienthandler,buffer,BUF_SZ);
 						//fprintf(stderr,"read succeded\n");
-						fprintf(stderr,"nread: %zu\n",nread_b);
+						//fprintf(stderr,"nread: %zu\n",nread_b);
     					if (nread_b < 0) {
 							perror("read issues");
 							break;
@@ -169,22 +168,27 @@ int main(int argc, char** argv) {
 								for(int i = 0; i < MSG_SZ; i++){
 									message[i] = buffer[i+2];
 								}
-								fprintf(stderr,"message: %s\n",message);
-								fprintf(stderr,"ident: %s\n",identifer);
-								fprintf(stderr,"domain: %s\n",domain);
+								//fprintf(stderr,"message: %s\n",message);
+								//fprintf(stderr,"ident: %s\n",identifer);
+								//fprintf(stderr,"domain: %s\n",domain);
 
 								//make receive binary
+								
+								for(int i = 0; i < BUF_SZ; i++){
+									receive_buf[i] = 0;
+								}
 								//type
 								receive_buf[1] = 3;
+
 								//identifier
 								for(int i = 0; i < IDENT_SZ; i++){
-									receive_buf[i+2] = identifer[i];
+									receive_buf[i+2] = buf[i+2];
 								}
 								//message
 								for(int i = 0; i < MSG_SZ; i++){
-									receive_buf[i+258] = message[i];
+									receive_buf[i+258] = buffer[i+2];
 								}
-								fprintf(stderr,"receiveid message: %s\n",receive_buf);
+								//fprintf(stderr,"receiveid message: %s\n",receive_buf);
 
 								
 								//open directory and check error
@@ -192,36 +196,36 @@ int main(int argc, char** argv) {
 									fprintf(stderr, " failed to open directory\n");
 								}
 								
-								fprintf(stderr,"opened directory\n");
+								//fprintf(stderr,"opened directory\n");
 								//loop thourgh the files and send to every file that has _RD as postic and is not the identifier
 								while ((ent = readdir (dir)) != NULL) {
 									//check is identifer
-									fprintf(stderr,"id : %s\n",identifer);
-									fprintf(stderr,"dname name : %s\n",ent->d_name);
+									//fprintf(stderr,"id : %s\n",identifer);
+									//fprintf(stderr,"dname name : %s\n",ent->d_name);
     								if(strncmp(identifer,ent->d_name,strlen(identifer)) == 0){
-										fprintf(stderr,"continued\n");
+										//fprintf(stderr,"continued\n");
 										continue;
 										
 									}else{
 										//check if _RD and write to it
 										filename_sz = strlen(ent->d_name);
-										fprintf(stderr,"filename size: %zu\n",filename_sz);
+										//fprintf(stderr,"filename size: %zu\n",filename_sz);
 										if(strcmp(ent->d_name + filename_sz - 3 ,RD_POSTFIX) == 0){
 											//open FIFO and write to it
 
 											sprintf(write_path,"%s/%s",domain,ent->d_name);
-											fprintf(stderr,"write path: %s\n",write_path);
+											//fprintf(stderr,"write path: %s\n",write_path);
 											rec_fd = open(write_path,O_WRONLY);
 											if(rec_fd < 0){
 												fprintf(stderr, "Unable to open _RD by CH");
   											}
 
-											fprintf(stderr,"we are before writing\n");
+											//fprintf(stderr,"we are before writing\n");
 											//write to rd_fd
 											if(write(rec_fd, receive_buf, BUF_SZ) < 0){
 												fprintf(stderr,"Unable to RECEIVE");
 											}
-											fprintf(stderr,"we are after writing\n");
+											//fprintf(stderr,"we are after writing\n");
 											if(close(rec_fd) == -1){
     											fprintf(stderr, "Unable to close _RD file");
   											}
