@@ -204,7 +204,7 @@ int main(int argc, char** argv) {
 										
 									}else{
 										//check if _RD and write to it
-										filename_sz = strlen(identifer);
+										filename_sz = strlen(ent->d_name);
 										fprintf(stderr,"filename size: %zu\n",filename_sz);
 										if(strcmp(ent->d_name + filename_sz - 3 ,RD_POSTFIX) == 0){
 											//open FIFO and write to it
