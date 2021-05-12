@@ -127,7 +127,7 @@ int main(int argc, char** argv) {
 				}
 				else if(0 == client_handler){
 					unsigned char buffer[BUF_SZ];
-					char message[MSG_SZ];
+					//char message[MSG_SZ];
 					unsigned char receive_buf[BUF_SZ];
 					//fprintf(stdout,"hello from child");
 					int rec_fd;
