@@ -129,7 +129,7 @@ int main(int argc, char** argv) {
 					char message[MSG_SZ];
 					unsigned char* receive_buf[BUF_SZ];
 					//fprintf(stdout,"hello from child");
-					int rd_fd;
+					int rec_fd;
 					//open RD and WR files
 					int client_to_clienthandler = open(WR_filename,O_RDONLY);
 					int clienthandler_to_client = open(RD_filename,O_WRONLY);
@@ -185,16 +185,16 @@ int main(int argc, char** argv) {
 										//check if _RD and write to it
 										if(strcmp(ent->d_name[strlen(ent->d_name - 3)],RD_POSTFIX)){
 											//open FIFO and write to it
-											rd_fd = open(ent->d_name,O_RDWR | O_NONBLOCK);
-											if(rd_fd < 0){
+											rec_fd = open(ent->d_name,O_RDWR | O_NONBLOCK);
+											if(rec_fd < 0){
 												fprintf(stderr, "Unable to open _RD by CH");
   											}
 
 											//write to rd_fd
-											if(write(rd_fd, receive_buf, BUF_SZ) < 0){
+											if(write(rec_fd, receive_buf, BUF_SZ) < 0){
 												fprintf(stderr,"Unable to RECEIVE");
 											}
-											if(close(rd_fd) == -1){
+											if(close(rec_fd) == -1){
     											fprintf(stderr, "Unable to close _RD file");
   											}
 										}
