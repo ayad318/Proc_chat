@@ -208,19 +208,20 @@ int main(int argc, char** argv) {
 										fprintf(stderr,"filename size: %zu\n",filename_sz);
 										if(strcmp(ent->d_name + filename_sz - 3 ,RD_POSTFIX) == 0){
 											//open FIFO and write to it
+
 											sprintf(write_path,"%s/%s",domain,ent->d_name);
 											fprintf(stderr,"write path: %s\n",write_path);
-											fprintf(stdout,write_path);
 											rec_fd = open(write_path,O_WRONLY | O_NONBLOCK);
 											if(rec_fd < 0){
 												fprintf(stderr, "Unable to open _RD by CH");
   											}
 
-											
+											fprintf(stderr,"we are before writing");
 											//write to rd_fd
 											if(write(rec_fd, receive_buf, BUF_SZ) < 0){
 												fprintf(stderr,"Unable to RECEIVE");
 											}
+											fprintf(stderr,"we are after writing");
 											if(close(rec_fd) == -1){
     											fprintf(stderr, "Unable to close _RD file");
   											}
