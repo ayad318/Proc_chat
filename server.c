@@ -211,17 +211,17 @@ int main(int argc, char** argv) {
 
 											sprintf(write_path,"%s/%s",domain,ent->d_name);
 											fprintf(stderr,"write path: %s\n",write_path);
-											rec_fd = open(ent->d_name,O_WRONLY | O_NONBLOCK);
+											rec_fd = open(write_path,O_WRONLY);
 											if(rec_fd < 0){
 												fprintf(stderr, "Unable to open _RD by CH");
   											}
 
-											fprintf(stderr,"we are before writing");
+											fprintf(stderr,"we are before writing\n");
 											//write to rd_fd
 											if(write(rec_fd, receive_buf, BUF_SZ) < 0){
 												fprintf(stderr,"Unable to RECEIVE");
 											}
-											fprintf(stderr,"we are after writing");
+											fprintf(stderr,"we are after writing\n");
 											if(close(rec_fd) == -1){
     											fprintf(stderr, "Unable to close _RD file");
   											}
