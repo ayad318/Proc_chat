@@ -329,6 +329,5 @@ int main(int argc, char** argv) {
   	}
 	  
 	unlink(CHANNEL_NAME);
-	
   	return 0;
 }
