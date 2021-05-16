@@ -25,11 +25,11 @@
 
 
 //took from http://www.microhowto.info/howto/reap_zombie_processes_using_a_sigchld_handler.html#:~:text=The%20process%20of%20eliminating%20zombie,or%20SIGCHLD%20to%20reap%20asynchronously
-void handle_sigchld(int sig) {
+/*void handle_sigchld(int sig) {
   int saved_errno = errno;
   while (waitpid((pid_t)(-1), 0, WNOHANG) > 0) {}
   errno = saved_errno;
-}
+}*/
 
 int main(int argc, char** argv) {
     
