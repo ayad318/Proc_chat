@@ -320,6 +320,7 @@ int main(int argc, char** argv) {
 								close(client_handler);
 								unlink(RD_filename);
 								unlink(WR_filename);
+								break;
 								return 0;
 							}
 
