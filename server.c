@@ -322,7 +322,7 @@ int main(int argc, char** argv) {
 								unlink(WR_filename);
 								remove(RD_filename);
 								remove(WR_filename);
-								exit(1);
+								exit(0);
 							}
 
 						}						
