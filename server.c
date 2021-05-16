@@ -13,6 +13,7 @@
 #include <stdint.h>
 #include <dirent.h>
 #include <sys/select.h>
+#include <signal.h>
 
 #define BUF_SZ (2048)
 #define IDENT_SZ (256)
@@ -22,6 +23,13 @@
 #define RD_POSTFIX ("_RD")
 #define WR_POSTFIX ("_WR")
 
+
+//took from http://www.microhowto.info/howto/reap_zombie_processes_using_a_sigchld_handler.html#:~:text=The%20process%20of%20eliminating%20zombie,or%20SIGCHLD%20to%20reap%20asynchronously
+void handle_sigchld(int sig) {
+  int saved_errno = errno;
+  while (waitpid((pid_t)(-1), 0, WNOHANG) > 0) {}
+  errno = saved_errno;
+}
 
 int main(int argc, char** argv) {
     
@@ -51,6 +59,7 @@ int main(int argc, char** argv) {
 	int rd_fd;
 	int wr_fd;
 
+	signal(SIGCHLD,SIG_IGN);
   	while(1){
 
     	//read from gevent and check fro errors
@@ -59,15 +68,8 @@ int main(int argc, char** argv) {
 			perror("read issues");
 			break;
     	}else if ( 0 == nread){
-			//printf("no data\n");
+			//no input to gevent
 		}else {
-			
-			//printf("nread: %zd\n", nread);
-			//printf("buffer: %s\n", buf);
-      		//IGNORE JUST FOR QUITTING THE LOOP
-			if(*buf == 'q'){
-				break;
-			}
 
 			//CONNECT
 			if(*buf == 0 && *(buf+1) == 0){
