@@ -326,7 +326,6 @@ int main(int argc, char** argv) {
   	if(close(fd) == -1){
     	fprintf(stderr, "Unable to close gevent");
   	}
-	  
 	unlink(CHANNEL_NAME);
   	return 0;
 }
