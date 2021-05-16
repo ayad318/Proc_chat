@@ -285,8 +285,8 @@ int main(int argc, char** argv) {
 					if(close(client_to_clienthandler) == -1){
     					fprintf(stderr, "Unable to close client_to_clienthandler");
   					}
-					remove(RD_filename);
-					remove(WR_filename);
+					unlink(RD_filename);
+					unlink(WR_filename);
 					return 0;
 				}
       		}
