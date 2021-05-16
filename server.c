@@ -317,18 +317,19 @@ int main(int argc, char** argv) {
 
 							//DISCONNECT
 							if(*buffer == 7 && *(buffer+1) == 0){
-								if(close(client_to_clienthandler) == -1){
-    								fprintf(stderr, "Unable to close client_to_clienthandler");
-  								}
-								//unlink(RD_filename);
-								//unlink(WR_filename);
-								remove(RD_filename);
-								remove(WR_filename);
-								exit(0);
+								
+								break;
 							}
 
 						}						
 					}
+					//disconnect
+					if(close(client_to_clienthandler) == -1){
+    					fprintf(stderr, "Unable to close client_to_clienthandler");
+  					}
+					remove(RD_filename);
+					remove(WR_filename);
+					return 0;
 				}
       		}
 		}
