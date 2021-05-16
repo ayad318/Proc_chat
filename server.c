@@ -24,12 +24,6 @@
 #define WR_POSTFIX ("_WR")
 
 
-//took from http://www.microhowto.info/howto/reap_zombie_processes_using_a_sigchld_handler.html#:~:text=The%20process%20of%20eliminating%20zombie,or%20SIGCHLD%20to%20reap%20asynchronously
-/*void handle_sigchld(int sig) {
-  int saved_errno = errno;
-  while (waitpid((pid_t)(-1), 0, WNOHANG) > 0) {}
-  errno = saved_errno;
-}*/
 
 int main(int argc, char** argv) {
     
@@ -59,6 +53,7 @@ int main(int argc, char** argv) {
 	int rd_fd;
 	int wr_fd;
 
+	//prevent zombie process
 	signal(SIGCHLD,SIG_IGN);
   	while(1){
 
@@ -102,9 +97,6 @@ int main(int argc, char** argv) {
 				strcat(RD_filename,RD_POSTFIX);
 				strcat(WR_filename,WR_POSTFIX);
 
-				//fprintf(stdout,"read filename: %s\n",RD_filename);
-				//fprintf(stdout,"write filename: %s\n",WR_filename);
-				//fprintf(stdout,"domain name: %s\n",domain);
 				//make domain and check error
 				if(mkdir(domain,0777) == -1){
 					if(errno == EEXIST){
@@ -128,21 +120,13 @@ int main(int argc, char** argv) {
 					fprintf(stderr,"Failed to create client handler");
 				}
 				else if(0 == client_handler){
+
 					unsigned char buffer[BUF_SZ];
-					//char message[MSG_SZ];
 					unsigned char receive_buf[BUF_SZ];
-					//fprintf(stdout,"hello from child");
+					
 					int rec_fd;
 					//open RD and WR files
 					int client_to_clienthandler = open(WR_filename,O_RDONLY);
-					//int clienthandler_to_client = open(RD_filename,O_WRONLY);
-
-					// inital set for select to use later
-					//fd_set wfds;
-					//int retval;
-					//fprintf(stdout,"hello\n");
-					//printf("hello2\n");
-					//fprintf(stderr,"hello\n");
 					//open domain and read from it
 					DIR *dir;
 					struct dirent *ent;
@@ -150,33 +134,22 @@ int main(int argc, char** argv) {
 					size_t filename_sz;
 
 					char write_path[DOMAIN_SZ+IDENT_SZ + 2];
-					//fprintf(stderr,"hello2\n");
+					
 					while(1){
 
 						//read from client and check error
-						//fprintf(stderr,"before read\n");
 						size_t nread_b = read(client_to_clienthandler,buffer,BUF_SZ);
-						//fprintf(stderr,"read succeded\n");
-						//fprintf(stderr,"nread: %zu\n",nread_b);
+						
     					if (nread_b < 0) {
 							perror("read issues");
 							break;
     					}else if ( 0 == nread_b){
-							//printf("no data\n");
+							//nothing no input data
 						}else{
 							//SAY
-							//fprintf(stderr,"buffer 1 and 2: %x %x\n",buffer[0],buffer[1]);
 							if(*buffer == 1 && *(buffer + 1) == 0){
-								//copy message 
-								/*for(int i = 0; i < MSG_SZ; i++){
-									message[i] = buffer[i+2];
-								}*/
-								//fprintf(stderr,"message: %s\n",message);
-								//fprintf(stderr,"ident: %s\n",identifer);
-								//fprintf(stderr,"domain: %s\n",domain);
-
+	
 								//make receive binary
-								
 								for(int i = 0; i < BUF_SZ; i++){
 									receive_buf[i] = 0;
 								}
@@ -191,44 +164,37 @@ int main(int argc, char** argv) {
 								for(int i = 0; i < MSG_SZ; i++){
 									receive_buf[i+258] = buffer[i+2];
 								}
-								//fprintf(stderr,"receiveid message: %s\n",receive_buf);
-
 								
 								//open directory and check error
 								if ((dir = opendir(domain)) == NULL){
 									fprintf(stderr, " failed to open directory\n");
 								}
 								
-								//fprintf(stderr,"opened directory\n");
 								//loop thourgh the files and send to every file that has _RD as postic and is not the identifier
 								while ((ent = readdir (dir)) != NULL) {
 									//check is identifer
-									//fprintf(stderr,"id : %s\n",identifer);
-									//fprintf(stderr,"dname name : %s\n",ent->d_name);
     								if(strncmp(identifer,ent->d_name,strlen(identifer)) == 0){
-										//fprintf(stderr,"continued\n");
 										continue;
 										
 									}else{
 										//check if _RD and write to it
 										filename_sz = strlen(ent->d_name);
-										//fprintf(stderr,"filename size: %zu\n",filename_sz);
+										
 										if(strcmp(ent->d_name + filename_sz - 3 ,RD_POSTFIX) == 0){
 											//open FIFO and write to it
 
 											sprintf(write_path,"%s/%s",domain,ent->d_name);
-											//fprintf(stderr,"write path: %s\n",write_path);
+											
 											rec_fd = open(write_path,O_WRONLY);
 											if(rec_fd < 0){
 												fprintf(stderr, "Unable to open _RD by CH");
   											}
 
-											//fprintf(stderr,"we are before writing\n");
 											//write to rd_fd
 											if(write(rec_fd, receive_buf, BUF_SZ) < 0){
 												fprintf(stderr,"Unable to RECEIVE");
 											}
-											//fprintf(stderr,"we are after writing\n");
+											
 											if(close(rec_fd) == -1){
     											fprintf(stderr, "Unable to close _RD file");
   											}
@@ -242,15 +208,7 @@ int main(int argc, char** argv) {
 
 							//SAYCONT
 							if(*buffer == 2 && *(buffer+1) == 0){
-								//copy message 
-								/*for(int i = 0; i < MSG_SZ; i++){
-									message[i] = buffer[i+2];
-								}*/
-								//fprintf(stderr,"message: %s\n",message);
-								//fprintf(stderr,"ident: %s\n",identifer);
-								//fprintf(stderr,"domain: %s\n",domain);
-
-								//make receive binary
+								//make receivecont binary
 								
 								for(int i = 0; i < BUF_SZ; i++){
 									receive_buf[i] = 0;
@@ -269,7 +227,7 @@ int main(int argc, char** argv) {
 								}
 								//termination byte
 								receive_buf[2047] = buffer[2047];
-								//fprintf(stderr,"receiveid message: %s\n",receive_buf);
+								
 
 								
 								//open directory and check error
@@ -277,36 +235,34 @@ int main(int argc, char** argv) {
 									fprintf(stderr, " failed to open directory\n");
 								}
 								
-								//fprintf(stderr,"opened directory\n");
+								
 								//loop thourgh the files and send to every file that has _RD as postic and is not the identifier
 								while ((ent = readdir (dir)) != NULL) {
 									//check is identifer
-									//fprintf(stderr,"id : %s\n",identifer);
-									//fprintf(stderr,"dname name : %s\n",ent->d_name);
+									
     								if(strncmp(identifer,ent->d_name,strlen(identifer)) == 0){
-										//fprintf(stderr,"continued\n");
+									
 										continue;
 										
 									}else{
 										//check if _RD and write to it
 										filename_sz = strlen(ent->d_name);
-										//fprintf(stderr,"filename size: %zu\n",filename_sz);
+										
 										if(strcmp(ent->d_name + filename_sz - 3 ,RD_POSTFIX) == 0){
 											//open FIFO and write to it
 
 											sprintf(write_path,"%s/%s",domain,ent->d_name);
-											//fprintf(stderr,"write path: %s\n",write_path);
+											
 											rec_fd = open(write_path,O_WRONLY);
 											if(rec_fd < 0){
 												fprintf(stderr, "Unable to open _RD by CH");
   											}
 
-											//fprintf(stderr,"we are before writing\n");
 											//write to rd_fd
 											if(write(rec_fd, receive_buf, BUF_SZ) < 0){
 												fprintf(stderr,"Unable to RECEIVE");
 											}
-											//fprintf(stderr,"we are after writing\n");
+
 											if(close(rec_fd) == -1){
     											fprintf(stderr, "Unable to close _RD file");
   											}
