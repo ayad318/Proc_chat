@@ -315,6 +315,14 @@ int main(int argc, char** argv) {
 								closedir (dir);
 							}
 
+							//DISCONNECT
+							if(*buffer == 7 && *(buffer+1) == 0){
+								close(client_handler);
+								unlink(RD_filename);
+								unlink(WR_filename);
+								return 0;
+							}
+
 						}						
 					}
 				}
