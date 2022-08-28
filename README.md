@@ -152,25 +152,4 @@ No Excessive CPU usage
 
 No Zombie Processes (clean up your processes when you can)
 
-If your program does not adhere to these restrictions, your submission will receive 0.
-
 Make sure you thoroughly test your program and construct a mini-client program to interact with your server.
-
-Marking Criteria
-The following is the marking break, each point contributes a portion to the total 15% of the assignment. You will receive a result of zero if your program fails to compile.
-
-5% Test Cases - Your Program must pass public, private and hidden test cases, to achieve the maximum number of points awarded for this section.
-
-6% Solution Discussion - You will need to answer questions from a COMP2017 teaching staff member regarding your implementation. You will be required to attend zoom session with COMP2017 teaching staff member after the code submission deadline. A reasonable attempt will need to be made, otherwise you will receive zero for the assessment. Failure to attend will result in zero for the assessment. In this session, you will be asked to explain:
-
-How your solution communicates between the client-handler and client?
-
-How are you handling erroneous messages?
-
-How is your solution handling client failure?
-
-Answer further questions regarding your test cases, code style and knowledge.
-
-2% Extension - Your client-handler must be able to detect when a client is no longer alive. This must be a clear use of non-blocking IO and multiplexing.
-
-2% Test Cases - Your solution must include a suite of test cases that should be automated and executable with the given make script. Please make sure your test suite outputs the result of each test case in a human readable format.
